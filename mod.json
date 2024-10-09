@@ -1,0 +1,21 @@
+{
+	"geode": "3.8.1",
+	"gd": {
+		"win": "2.206",
+		"android": "2.206",
+		"mac": "2.206",
+		"ios": "2.206"
+	},
+	"id": "abb2k.duration_filter",
+	"name": "Duration Filter",
+	"version": "v1.0.1",
+	"developer": "abb2k",
+	"description": "",
+	"dependencies": [
+		{
+			"id": "geode.node-ids",
+			"version": ">=1.12.0-beta.1",
+			"importance": "required"
+		}
+	]
+}
