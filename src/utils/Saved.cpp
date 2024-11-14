@@ -8,7 +8,6 @@ void Saved::setDurationFiltered(float duration){
     Mod::get()->setSavedValue<float>("DurationFiltered", duration);
 }
 
-
 std::string Saved::getDurationOperator(){
     return Mod::get()->getSavedValue<std::string>("DurationOperator", "=");
 }
