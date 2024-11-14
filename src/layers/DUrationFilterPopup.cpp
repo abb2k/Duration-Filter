@@ -3,7 +3,7 @@
 
 DUrationFilterPopup* DUrationFilterPopup::create(CCLabelBMFont* label) {
     auto ret = new DUrationFilterPopup();
-    if (ret && ret->init(220, 150, label, "GJ_square01.png", {0.f, 0.f, 80.f, 80.f})) {
+    if (ret && ret->initAnchored(220, 150, label, "GJ_square01.png", {0.f, 0.f, 80.f, 80.f})) {
         ret->autorelease();
         return ret;
     }
@@ -25,11 +25,16 @@ bool DUrationFilterPopup::setup(CCLabelBMFont* label) {
 
     outerLabel = label;
 
+    auto alignmentNode = CCMenu::create();
+    alignmentNode->setID("alignment-node");
+    alignmentNode->setPosition(m_size / 2);
+    m_mainLayer->addChild(alignmentNode);
+
     auto tInputDu = TextInput::create(80, "Duration");
     tInputDu->setString("Duration");
     tInputDu->setPosition({-58, 23});
     tInputDu->getInputNode()->setTouchEnabled(false);
-    this->m_buttonMenu->addChild(tInputDu);
+    alignmentNode->addChild(tInputDu);
 
     DurationTextInput = TextInput::create(80, "Filter");
 
@@ -42,7 +47,7 @@ bool DUrationFilterPopup::setup(CCLabelBMFont* label) {
     DurationTextInput->setCommonFilter(CommonFilter::Float);
     DurationTextInput->setDelegate(this);
     DurationTextInput->setPosition({58, 23});
-    this->m_buttonMenu->addChild(DurationTextInput);
+    alignmentNode->addChild(DurationTextInput);
     
     buttonS = ButtonSprite::create("0", "bigFont.fnt", "GJ_button_01.png", 1);
     buttonS->setScale(0.65f);
@@ -53,7 +58,7 @@ bool DUrationFilterPopup::setup(CCLabelBMFont* label) {
 		menu_selector(DUrationFilterPopup::OnOperatorChanged)
 	);
     duOperatorButton->setPositionY(23);
-    this->m_buttonMenu->addChild(duOperatorButton);
+    alignmentNode->addChild(duOperatorButton);
     buttonS->m_label->setString(Saved::getDurationOperator().c_str());
 
     auto checkOn = CCSprite::createWithSpriteFrameName("GJ_checkOn_001.png");
@@ -68,13 +73,13 @@ bool DUrationFilterPopup::setup(CCLabelBMFont* label) {
     );
     EnabledToggle->setPosition({-56, -15});
     EnabledToggle->toggle(Saved::getDurationFilterEnabled());
-    this->m_buttonMenu->addChild(EnabledToggle);
+    alignmentNode->addChild(EnabledToggle);
 
     auto EnabledToggleToggle = CCLabelBMFont::create("Filter Enabled", "bigFont.fnt");
     EnabledToggleToggle->setAlignment(CCTextAlignment::kCCTextAlignmentLeft);
     EnabledToggleToggle->setPosition({22, -15});
     EnabledToggleToggle->setScale(0.45f);
-    this->m_buttonMenu->addChild(EnabledToggleToggle);
+    alignmentNode->addChild(EnabledToggleToggle);
 
     auto okButtonS = ButtonSprite::create("Ok", "goldFont.fnt", "GJ_button_01.png", 1);
 	auto okButton = CCMenuItemSpriteExtra::create(
@@ -84,7 +89,7 @@ bool DUrationFilterPopup::setup(CCLabelBMFont* label) {
 		menu_selector(DUrationFilterPopup::onClose)
 	);
     okButton->setPositionY(-52);
-    this->m_buttonMenu->addChild(okButton);
+    alignmentNode->addChild(okButton);
 
     return true;
 }
@@ -113,9 +118,9 @@ void DUrationFilterPopup::OnToggledEnabled(CCObject*){
 void DUrationFilterPopup::textChanged(CCTextInputNode* input){
     if (input == DurationTextInput->getInputNode()){
         auto val = geode::utils::numFromString<float>(input->getString());
-
+    
         if (val.isOk()){
-            float realVal = val.value();
+            float realVal = val.unwrap();
             if (realVal < 0){
                 realVal = 0;
                 DurationTextInput->setString("0");
