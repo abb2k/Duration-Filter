@@ -1,3 +1,6 @@
+# 1.0.4
+- iOS support
+
 # 1.0.3
 - updated for geode v4.0.0-beta.1
 

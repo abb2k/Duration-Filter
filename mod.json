@@ -8,7 +8,7 @@
 	},
 	"id": "abb2k.duration_filter",
 	"name": "Duration Filter",
-	"version": "v1.0.3",
+	"version": "v1.0.4",
 	"developer": "abb2k",
 	"description": "",
 	"dependencies": [
