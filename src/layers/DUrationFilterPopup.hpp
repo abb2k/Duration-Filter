@@ -4,9 +4,9 @@
 
 using namespace geode::prelude;
 
-class DUrationFilterPopup : public Popup<CCLabelBMFont*>, public TextInputDelegate {
+class DUrationFilterPopup : public Popup, public TextInputDelegate {
     private:
-        bool setup(CCLabelBMFont* label);
+        bool init(CCLabelBMFont* label);
 
         TextInput* DurationTextInput;
         CCMenuItemToggler* EnabledToggle;
@@ -16,12 +16,12 @@ class DUrationFilterPopup : public Popup<CCLabelBMFont*>, public TextInputDelega
 
         void OnOperatorChanged(CCObject*);
         void OnToggledEnabled(CCObject*);
-        void textChanged(CCTextInputNode* input);
+        void textChanged(CCTextInputNode* input) override;
 
         void onClose(cocos2d::CCObject*) override;
 
     public:
         static DUrationFilterPopup* create(CCLabelBMFont* label);
 
-        void show();
+        void show() override;
 };

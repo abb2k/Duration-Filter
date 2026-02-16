@@ -3,11 +3,11 @@
 
 DUrationFilterPopup* DUrationFilterPopup::create(CCLabelBMFont* label) {
     auto ret = new DUrationFilterPopup();
-    if (ret && ret->initAnchored(220, 150, label, "GJ_square01.png", {0.f, 0.f, 80.f, 80.f})) {
+    if (ret && ret->init(label)) {
         ret->autorelease();
         return ret;
     }
-    CC_SAFE_DELETE(ret);
+    delete ret;
     return nullptr;
 }
 
@@ -19,7 +19,9 @@ void DUrationFilterPopup::show(){
     scene->addChild(this);
 }
 
-bool DUrationFilterPopup::setup(CCLabelBMFont* label) {
+bool DUrationFilterPopup::init(CCLabelBMFont* label) {
+    if (!Popup::init(220, 150, "GJ_square01.png", {0.f, 0.f, 80.f, 80.f}))
+        return false;
 
     this->setTitle("Duration Filter");
 
@@ -137,5 +139,5 @@ void DUrationFilterPopup::onClose(cocos2d::CCObject* sender){
     if (outerLabel)
         outerLabel->setString(fmt::format("{}{}", Saved::getDurationOperator(), static_cast<int>(Saved::getDurationFiltered())).c_str());
         
-    Popup<CCLabelBMFont*>::onClose(sender);
+    Popup::onClose(sender);
 }

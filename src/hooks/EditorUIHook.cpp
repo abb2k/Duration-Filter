@@ -40,11 +40,10 @@ void MyEditorUI::selectObject(GameObject* p0, bool p1){
 
 void MyEditorUI::selectObjects(cocos2d::CCArray* p0, bool p1){
 
-	CCObject* child;
-
 	std::vector<GameObject*> toRemove{};
 
-	CCARRAY_FOREACH(p0, child){
+	for (const auto& child : CCArrayExt<CCObject*>(p0))
+	{
 		if (auto objec = typeinfo_cast<GameObject*>(child)){
 			if (!isGameObjectSelectValid(objec)) toRemove.push_back(objec);
 		}
