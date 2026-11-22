@@ -1,4 +1,7 @@
 # 1.0.6
+- updated for geode V6 beta 1 :D
+
+# 1.0.6
 - updated for geode V5 :D
 
 # 1.0.5

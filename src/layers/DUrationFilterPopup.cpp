@@ -35,8 +35,8 @@ bool DUrationFilterPopup::init(CCLabelBMFont* label) {
     auto tInputDu = TextInput::create(80, "Duration");
     tInputDu->setString("Duration");
     tInputDu->setPosition({-58, 23});
-    tInputDu->getInputNode()->setTouchEnabled(false);
     alignmentNode->addChild(tInputDu);
+    CCTouchDispatcher::get()->removeDelegate(tInputDu);
 
     DurationTextInput = TextInput::create(80, "Filter");
 
@@ -47,7 +47,20 @@ bool DUrationFilterPopup::init(CCLabelBMFont* label) {
         DurationTextInput->setString(std::to_string(num));
     
     DurationTextInput->setCommonFilter(CommonFilter::Float);
-    DurationTextInput->setDelegate(this);
+    DurationTextInput->setCallback([this](const std::string& str){
+        auto val = geode::utils::numFromString<float>(str);
+        if (val.isOk()){
+            float realVal = val.unwrap();
+            if (realVal < 0){
+                realVal = 0;
+                DurationTextInput->setString("0");
+            }
+            Saved::setDurationFiltered(realVal);
+        }
+        else{
+            Saved::setDurationFiltered(0);
+        }
+    });
     DurationTextInput->setPosition({58, 23});
     alignmentNode->addChild(DurationTextInput);
     
@@ -115,24 +128,6 @@ void DUrationFilterPopup::OnOperatorChanged(CCObject*){
 
 void DUrationFilterPopup::OnToggledEnabled(CCObject*){
     Saved::setDurationFilterEnabled(!EnabledToggle->isOn());
-}
-
-void DUrationFilterPopup::textChanged(CCTextInputNode* input){
-    if (input == DurationTextInput->getInputNode()){
-        auto val = geode::utils::numFromString<float>(input->getString());
-    
-        if (val.isOk()){
-            float realVal = val.unwrap();
-            if (realVal < 0){
-                realVal = 0;
-                DurationTextInput->setString("0");
-            }
-            Saved::setDurationFiltered(realVal);
-        }
-        else{
-            Saved::setDurationFiltered(0);
-        }
-    }
 }
 
 void DUrationFilterPopup::onClose(cocos2d::CCObject* sender){

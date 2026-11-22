@@ -4,7 +4,7 @@
 
 using namespace geode::prelude;
 
-class DUrationFilterPopup : public Popup, public TextInputDelegate {
+class DUrationFilterPopup : public Popup {
     private:
         bool init(CCLabelBMFont* label);
 
@@ -16,7 +16,6 @@ class DUrationFilterPopup : public Popup, public TextInputDelegate {
 
         void OnOperatorChanged(CCObject*);
         void OnToggledEnabled(CCObject*);
-        void textChanged(CCTextInputNode* input) override;
 
         void onClose(cocos2d::CCObject*) override;
 
