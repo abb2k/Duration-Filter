@@ -64,7 +64,8 @@ bool MyEditorUI::isGameObjectSelectValid(GameObject* objec){
 		return true;
 	}
 
-	if (auto trigger = typeinfo_cast<EnhancedTriggerObject*>(objec)){
+	auto trigger = typeinfo_cast<EffectGameObject*>(objec);
+	if (trigger){
 		if (Saved::getDurationOperator() == "="){
 			if (trigger->m_duration != Saved::getDurationFiltered()){
 				return false;
@@ -81,26 +82,9 @@ bool MyEditorUI::isGameObjectSelectValid(GameObject* objec){
 			}
 		}
 	}
-	else if (auto trigger = typeinfo_cast<TriggerControlGameObject*>(objec)){
-
-		if (Saved::getDurationOperator() == "="){
-			if (trigger->m_duration != Saved::getDurationFiltered()){
-				return false;
-			}
-		}
-		else if (Saved::getDurationOperator() == ">"){
-			if (trigger->m_duration <= Saved::getDurationFiltered()){
-				return false;
-			}
-		}
-		else if (Saved::getDurationOperator() == "<"){
-			if (trigger->m_duration >= Saved::getDurationFiltered()){
-				return false;
-			}
-		}
-	}
-	else
+	else {
 		return false;
+	}
 
 	return true;
 }
